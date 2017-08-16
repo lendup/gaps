@@ -86,9 +86,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    puma (2.10.1)
-      rack (>= 1.1, < 2.0)
-    rack (1.5.2)
+    puma (3.9.1)
+    rack (1.6.8)
     rack-flash3 (1.0.5)
       rack
     rack-protection (1.5.3)
@@ -141,3 +140,9 @@ DEPENDENCIES
   rest-client
   sinatra
   thread
+
+RUBY VERSION
+   ruby 2.2.7p470
+
+BUNDLED WITH
+   1.15.3
