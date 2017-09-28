@@ -265,7 +265,7 @@ EOF
 
       # Could also store a refreshed_at prop in the DB, basically
       # doing mark-sweep. But this is simpler.
-      live_groups = Set.new(futures.map(&:~))
+      live_groups = futures.map(&:~)
 
       # Garbage-collect any groups that don't exist anymore
       self.find_each(deleted: false) do |group|

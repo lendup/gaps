@@ -1,29 +1,6 @@
 module Gaps::Third
   module YAMLUtils
     def self.make_yaml_safe!
-      # Make syck-based YAML safe
-      require 'yaml'
-      begin
-        require 'syck'
-        case RUBY_VERSION
-        when /\A1\.8/
-          syckmod = YAML
-        else
-          syckmod = Syck
-        end
-
-        whitelist_classes = [String, Hash, Symbol, Float, Array,
-          TrueClass, FalseClass, Integer,
-          Time, Date, NilClass]
-        syckmod.tagged_classes.delete_if { |k,v| !whitelist_classes.include?(v) }
-        syckmod.tagged_classes.freeze
-      rescue LoadError
-        unless RUBY_VERSION >= '2.0.0'
-          raise 'Could not load Syck to patch it, but not running under Ruby >=2.0'
-        end
-      end
-
-      # Make psych-based (1.9 / 2.x) YAML safe
       if defined?(Psych)
         Psych.const_set("UnsafeYAML", Class.new(StandardError))
         Psych.module_eval do
@@ -53,15 +30,13 @@ module Gaps::Third
           end
 
           def self.check_node(n)
-            unless n.tag.nil? || ['!', '!ruby/sym', '!ruby/symbol'].include?(n.tag)
+            # Note thbar: we're allowing HashWithIndifferentAccess here
+            # to cope with https://www.pivotaltracker.com/s/projects/971396
+            unless n.tag.nil? || ['!ruby/sym', '!ruby/symbol', '!map:HashWithIndifferentAccess', '!map:ActiveSupport::HashWithIndifferentAccess', '!ruby/hash:ActiveSupport::HashWithIndifferentAccess', '!binary', '!'].include?(n.tag)
               raise Psych::UnsafeYAML.new("Found node with tag: #{n.tag}")
             end
           end
         end
-
-        # Force the default engine back to Psych, since we require'd
-        # Syck.
-        YAML::ENGINE.yamler = 'psych'
       end
     end
 

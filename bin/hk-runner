@@ -5,6 +5,10 @@ if [ -n "${MONGOLAB_URI+1}" ]; then
   MONGODB_URL=$MONGOLAB_URI
 fi
 
+if [ -n "${MONGODB_URI+1}" ]; then
+  MONGODB_URL=$MONGODB_URI
+fi
+
 # Error if nothing found
 if [ -z "${MONGODB_URL}" ]; then
   echo "Probs not gonna work, needs a MONGODB URL"

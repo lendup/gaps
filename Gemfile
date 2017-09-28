@@ -1,4 +1,4 @@
-ruby '2.1.9'
+ruby '2.2.7'
 
 # Execute bundler hook (analogous to sourcing a dotfile)
 ['~/.', '/etc/'].any? do |file|
@@ -12,6 +12,7 @@ gem 'rack-flash3'
 gem 'rack_csrf'
 gem 'erubis'
 gem 'sinatra'
+gem 'mongo', '~> 1.12'
 gem 'mongo_mapper'
 gem 'bson_ext'
 gem 'einhorn'
